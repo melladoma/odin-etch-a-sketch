@@ -33,39 +33,42 @@ let cells = document.getElementsByClassName('cell');
 createGrid(); //creates a grid upon loading
 
 //LEAVING PEN-LIKE TRAIL UPON HOVERING
+
+//-- COLOR MODES
 let colormodeActive = true;
 let normalModeActive = true;
 let funkyModeActive = false;
 let colorPickingActive = false;
+let blendEffectActive;
 
-
-//COLOR MODES
 //default mode
+let bBlue = 255;
+let rBlue = 0;
+let gBlue = 0;
 function addBlue(ev) {
     normalModeActive = true;
     if (ev.fromElement.className === "cell") {
-        let b = 255;
-        let r = 0;
-        let g = 0;
-        ev.fromElement.style.backgroundColor = `rgb(${r},${g},${b})`;
+        ev.fromElement.style.backgroundColor = `rgb(${rBlue}, ${gBlue}, ${bBlue})`;
+        if (blendEffectActive) { addColorBlend(ev) };
     }
 }
+
 //Random color - Funky Mode
+let bRandom = 0;
+let rRandom = 0;
+let gRandom = 0;
 function addRandom(ev) {
+    funkyModeActive = true;
     if (ev.fromElement.className === "cell") {
-        funkyModeActive = true;
-        let b = 0;
-        let r = 0;
-        let g = 0;
-        b = Math.floor(Math.random() * 255);
-        r = Math.floor(Math.random() * 255);
-        g = Math.floor(Math.random() * 255);
-        ev.fromElement.style.backgroundColor = `rgb(${r},${g},${b})`;
+        bRandom = Math.floor(Math.random() * 255);
+        rRandom = Math.floor(Math.random() * 255);
+        gRandom = Math.floor(Math.random() * 255);
+        ev.fromElement.style.backgroundColor = `rgb(${rRandom}, ${gRandom}, ${bRandom})`;
+        if (blendEffectActive) { addColorBlend(ev) };
     }
 }
 
 //Picked color
-
 let allInput = document.querySelectorAll('input');
 let rInput
 let gInput
@@ -96,19 +99,12 @@ function addColorPicked(ev) {
         rInput = allInput[0].value;
         gInput = allInput[1].value;
         bInput = allInput[2].value;
-        ev.fromElement.style.backgroundColor = `rgb(${rInput},${gInput},${bInput})`;
+        ev.fromElement.style.backgroundColor = `rgb(${rInput}, ${gInput}, ${bInput})`;
+        if (blendEffectActive) { addColorBlend(ev) };
     }
 }
 
-function addColorBlended(ev) {
-    if (ev.fromElement.className === "cell") {
-        let b = 0;
-        let r = 0;
-        let g = 0;
-        ev.fromElement.style.backgroundColor = `rgb(${r},${g},${b})`;
-    }
-}
-
+// ADDING TRAIL 
 function addColor() {
     colormodeActive = true;
     if (colorPickingActive) {
@@ -120,6 +116,22 @@ function addColor() {
     }
 }
 
+//BLENDING EFFECT (AVAILABLE ON ALL COLOR MODES) 
+//HAS TO BE IMPROVED with another state than disabled because cells cannot be recolored after,  but with what?
+
+function addColorBlend(ev) {
+    ev.fromElement.addEventListener('mouseleave', togglestate);//one pass :disabled
+    if (ev.fromElement.disabled && ev.fromElement.style.filter !== "brightness(0.35)") {
+        ev.fromElement.style.filter = "brightness(0.55)";
+        ev.fromElement.addEventListener('mouseleave', togglestate);//two pass:abled
+    } else if (ev.fromElement.style.filter === "brightness(0.55)" && !ev.fromElement.disabled) {
+        ev.fromElement.style.filter = "brightness(0.35)";
+        ev.fromElement.addEventListener('mouseleave', togglestate);//three pass:disabled
+    }
+}
+function togglestate(ev) {
+    (ev.fromElement.disabled) ? ev.fromElement.disabled = false : ev.fromElement.disabled = true
+}
 
 //RESETTING GRID
 function resetGrid() {
@@ -141,7 +153,7 @@ function getUserGrid() {
     }
 };
 
-//NEW FUNCTIONS BUTTONS
+//FUNCTIONS BUTTONS + EVENTS
 const buttonSize = document.getElementById('button-size');
 buttonSize.addEventListener('click', getUserGrid)
 
@@ -177,6 +189,20 @@ customMode.addEventListener('click', () => {
     funkyModeActive = false;
     grid.addEventListener('mouseover', addColor());
 })
+
+const blendEffect = document.getElementById('button-blend');
+blendEffect.addEventListener('click', () => {
+    const blendEffectValue = document.getElementById("blend-value")
+    if (blendEffectActive) {
+        blendEffectActive = false;
+        blendEffectValue.textContent = " is OFF"
+
+    } else {
+        blendEffectActive = true;
+        blendEffectValue.textContent = " is ON"
+    }
+})
+
 
 //TOGGLE COLOR TRAIL WITH CLICK
 grid.addEventListener('click', () => {
