@@ -179,14 +179,14 @@ customMode.addEventListener('click', () => {
 })
 
 //TOGGLE COLOR TRAIL WITH CLICK
-// grid.addEventListener('click', () => {
-//     colormodeActive ? stopColor() : grid.addEventListener('mouseover', addColor());
-// });
+grid.addEventListener('click', () => {
+    colormodeActive ? stopColor() : grid.addEventListener('mouseover', addColor());
+});
 
-// function stopColor() {
-//     grid.removeEventListener('mouseover', addColor());
-//     colormodeActive = false;
-// }
+function stopColor() {
+    grid.removeEventListener('mouseover', addColor());
+    colormodeActive = false;
+}
 
 
 grid.addEventListener('mouseover', addColor());
