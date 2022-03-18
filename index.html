@@ -4,27 +4,40 @@
         <meta charset ="UTF-8">
         <title>Etch-a-sketch</title>
         <link rel="stylesheet" href="./styles.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
     </head>
     <body>
         <h1>Okay I Like it Picasso</h1>
-        <div class="button-panel">
-        <button id="button-size">Create new custom-sized grid</button>
-        <button id="button-reset">Reset grid</button>
-        <button id="button-funky">FUNKY MODE!</button>
-        <button id="button-normal">Default mode</button>
-        <button id="button-blend">Blend effect<span id="blend-value"> is OFF</span></button>
-        <div class="input-panel">
-            <button id="button-custom">Custom mode</button>
-        r <input id="r-value" type="text" value="0"> 
-        g <input id="g-value" type="text" value="0"> 
-        b <input id="b-value"type="text" value="0"> 
-        <span id="input-warning"></span>
-        <span id="current-setting"></span>
-    </div>
-    </div>
+        <div class="head-panel">
+            <div class="grid-panel">
+                 <button id="button-size"> <span class="material-icons md-36">open_with</span> <p>New grid</p></button> 
+                 <button id="button-reset"><span class="material-icons md-36">cached</span> <p>Reset grid</p></button>
+            </div>
+             <div class="mode-panel">
+                  <button id="button-funky">FUNKY MODE!</button>
+                  <button id="button-normal">Default mode</button>
+                  <button id="button-blend">Blend effect<span id="blend-value"></span></button>
+                  <button id="button-cell">Round Cells </button>
+                  <button id="button-border">Borderless mode</button>
+            </div>
+
+            <div class="input-panel">
+                    <button id="button-custom"><span class="material-icons md-36">invert_colors</span><p>Custom mode</p></button>
+                    <div>
+                        <div class="panel-rgb">
+                            <div class="panel-rgb"><span> r </span> <input id="r-value" type="text" value="0"> </div>
+                            <div class="panel-rgb"><span> g </span> <input id="g-value" type="text" value="0"> </div>
+                            <div class="panel-rgb"><span> b </span> <input id="b-value"type="text" value="0"> </div>
+                        </div>
+                        <span id="input-warning">You can pick a color here!</span>  
+                    </div>
+                        
+        </div>
+        </div>
 
         <div id="grid"></div>
 
         <script src="./script.js"></script>
     </body>
 </html>
+

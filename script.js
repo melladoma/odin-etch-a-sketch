@@ -21,11 +21,13 @@ function createColumns(cellsNum) {
         for (let j = 0; j < cellsNum; j++) {
             let newCell = document.createElement('div');
             rows[j].appendChild(newCell).className = "cell";
+            newCell.setAttribute("data-col", i);
             //calc of dynamic cell size within fixed grid size
             let cellSize = (maxSize - 2 * cellsNum) / cellsNum;
             newCell.style.height = `${cellSize}px`;
             newCell.style.width = `${cellSize}px`;
         }
+        rows[i].setAttribute("data-row", i);
     }
 }
 let cells = document.getElementsByClassName('cell');
@@ -41,13 +43,14 @@ let funkyModeActive = false;
 let colorPickingActive = false;
 let blendEffectActive;
 
+
 //default mode
 let bBlue = 255;
 let rBlue = 0;
 let gBlue = 0;
 function addBlue(ev) {
     normalModeActive = true;
-    if (ev.fromElement.className === "cell") {
+    if (ev.fromElement.className.includes("cell")) {
         ev.fromElement.style.backgroundColor = `rgb(${rBlue}, ${gBlue}, ${bBlue})`;
         if (blendEffectActive) { addColorBlend(ev) };
     }
@@ -59,7 +62,7 @@ let rRandom = 0;
 let gRandom = 0;
 function addRandom(ev) {
     funkyModeActive = true;
-    if (ev.fromElement.className === "cell") {
+    if (ev.fromElement.className.includes("cell")) {
         bRandom = Math.floor(Math.random() * 255);
         rRandom = Math.floor(Math.random() * 255);
         gRandom = Math.floor(Math.random() * 255);
@@ -95,7 +98,7 @@ for (let i = 0; i < 3; i++) {
 }
 
 function addColorPicked(ev) {
-    if (ev.fromElement.className === "cell") {
+    if (ev.fromElement.className.includes("cell")) {
         rInput = allInput[0].value;
         gInput = allInput[1].value;
         bInput = allInput[2].value;
@@ -170,6 +173,7 @@ funkyMode.addEventListener('click', () => {
     normalModeActive = false;
     colorPickingActive = false;
     grid.addEventListener('mouseover', addColor());
+    styleButton();
 })
 
 const normalMode = document.getElementById("button-normal");
@@ -179,6 +183,7 @@ normalMode.addEventListener('click', () => {
     funkyModeActive = false;
     colorPickingActive = false;
     grid.addEventListener('mouseover', addColor());
+    styleButton();
 })
 
 const customMode = document.getElementById("button-custom");
@@ -188,6 +193,7 @@ customMode.addEventListener('click', () => {
     normalModeActive = false;
     funkyModeActive = false;
     grid.addEventListener('mouseover', addColor());
+    styleButton();
 })
 
 const blendEffect = document.getElementById('button-blend');
@@ -195,13 +201,75 @@ blendEffect.addEventListener('click', () => {
     const blendEffectValue = document.getElementById("blend-value")
     if (blendEffectActive) {
         blendEffectActive = false;
-        blendEffectValue.textContent = " is OFF"
-
+        blendEffect.classList.remove("toggle");
     } else {
         blendEffectActive = true;
-        blendEffectValue.textContent = " is ON"
+        blendEffect.classList.add("toggle");
     }
 })
+
+//bubble grid mode
+const cellMode = document.getElementById('button-cell');
+let cellModeActive = false;
+cellMode.addEventListener('click', () => {
+    if (cellModeActive) {
+        cellModeActive = false;
+        cellMode.classList.remove("toggle");
+        for (let k = 0; k < cells.length; k++) {
+            cells[k].classList.remove("bubble")
+        }
+
+    } else {
+        cellModeActive = true;
+        cellMode.classList.add("toggle");
+        for (let k = 0; k < cells.length; k++) {
+            cells[k].classList.add("bubble")
+        }
+    }
+})
+
+
+//borderless grid mode
+const borderMode = document.getElementById('button-border');
+let borderModeActive = false;
+borderMode.addEventListener('click', () => {
+    if (borderModeActive) {
+        borderModeActive = false;
+        borderMode.classList.remove("toggle");
+        for (let k = 0; k < cells.length; k++) {
+            cells[k].classList.remove("borderless")
+        }
+
+    } else {
+        borderModeActive = true;
+        borderMode.classList.add("toggle");
+        for (let k = 0; k < cells.length; k++) {
+            cells[k].classList.add("borderless")
+        }
+    }
+})
+
+function styleButton() {
+
+    if (normalModeActive) {
+        normalMode.classList.add("active")
+    } else if (!normalModeActive) {
+        normalMode.classList.remove("active")
+    }
+    if (funkyModeActive) {
+        funkyMode.classList.add("active")
+    } else if (!funkyModeActive) {
+        funkyMode.classList.remove("active")
+    }
+    if (colorPickingActive) {
+        customMode.classList.add("active")
+    } else if (!colorPickingActive) {
+        customMode.classList.remove("active")
+    }
+}
+
+let rgbChoices = { red: "rgb(139, 0, 0)", green: "rgb(0, 128, 0)", blue: "rgb(0, 0, 255)", babyblue: "rgb(135,206,250)", yellow: "rgb(250,250,210)", orange: "rgb(255,165,0)", pink: "rgb(255,192,203)", violet: "rgb(139,0,139)", grey: "rgb(100,100,100)", black: "rgb(0,0,0)", white: "rgb(255,255,255" };
+
 
 
 //TOGGLE COLOR TRAIL WITH CLICK
@@ -213,8 +281,5 @@ function stopColor() {
     grid.removeEventListener('mouseover', addColor());
     colormodeActive = false;
 }
-
+styleButton();
 grid.addEventListener('mouseover', addColor());
-
-
-let rgbButtons = { red: "rgb(255, 0, 0)", green: "rgb(0, 128, 0)", blue: "rgb(0, 0, 255)", yellow: "rgb(255,255,0)", orange: "rgb(255,165,0)", pink: "rgb(255,192,203)", violet: "rgb(139,0,139)", black: "rgb(0,0,0)", white: "rgb(255,255,255" };
