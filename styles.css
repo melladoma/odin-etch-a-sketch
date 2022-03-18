@@ -1,0 +1,24 @@
+.cell {
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  flex-grow: 0;
+}
+
+h1 {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 21px;
+}
+
+#grid {
+  display: flex;
+  padding: 10px;
+  margin: 0;
+}
+
+.button-panel {
+  margin: 20px;
+}
+
+input {
+  width: 40px;
+}
