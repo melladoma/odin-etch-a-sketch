@@ -214,7 +214,7 @@ function stopColor() {
     colormodeActive = false;
 }
 
-
 grid.addEventListener('mouseover', addColor());
 
 
+let rgbButtons = { red: "rgb(255, 0, 0)", green: "rgb(0, 128, 0)", blue: "rgb(0, 0, 255)", yellow: "rgb(255,255,0)", orange: "rgb(255,165,0)", pink: "rgb(255,192,203)", violet: "rgb(139,0,139)", black: "rgb(0,0,0)", white: "rgb(255,255,255" };
