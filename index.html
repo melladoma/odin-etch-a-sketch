@@ -5,34 +5,60 @@
         <title>Etch-a-sketch</title>
         <link rel="stylesheet" href="./styles.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     </head>
     <body>
         <h1>Okay I Like it Picasso</h1>
         <div class="head-panel">
             <div class="grid-panel">
                  <button id="button-size"> <span class="material-icons md-36">open_with</span> <p>New grid</p></button> 
-                 <button id="button-reset"><span class="material-icons md-36">cached</span> <p>Reset grid</p></button>
-            </div>
-             <div class="mode-panel">
-                  <button id="button-funky">FUNKY MODE!</button>
-                  <button id="button-normal">Default mode</button>
-                  <button id="button-blend">Blend effect<span id="blend-value"></span></button>
-                  <button id="button-cell">Round Cells </button>
-                  <button id="button-border">Borderless mode</button>
-            </div>
+                <div class="grid-panel-middle">
+                    <div class="toggle">
+                        <span >Borderless grid</span>
+                        <label class="switch">
+                           <input id="border-switch"type="checkbox">
+                           <span class="slider round"></span>
+                        </label>
+                       </div>
 
+                    <div class="toggle">
+                     <span >Bubble grid</span>
+                     <label class="switch">
+                        <input id="bubble-switch"type="checkbox">
+                        <span class="slider round"></span>
+                     </label>
+                    </div>
+
+                </div>
+                <button id="button-reset"><span class="material-icons md-36">loop</span> <p>Reset grid</p></button>
+                </div>
+            
+<div class="color-panel">
             <div class="input-panel">
-                    <button id="button-custom"><span class="material-icons md-36">invert_colors</span><p>Custom mode</p></button>
-                    <div>
+                <div class="mode-panel">
+                    <button id="button-normal">Default mode</button>
+                    <button id="button-funky"> <span class="material-icons" id="funky-icon">auto_awesome</span> FUNKY MODE!</button>
+                </div>
+                <div class="custom-panel">
+                    <button id="button-custom"><span class="material-icons md-36">invert_colors</span><p>Custom</p></button>
+                    <div class="rgb-control">
                         <div class="panel-rgb">
-                            <div class="panel-rgb"><span> r </span> <input id="r-value" type="text" value="0"> </div>
-                            <div class="panel-rgb"><span> g </span> <input id="g-value" type="text" value="0"> </div>
-                            <div class="panel-rgb"><span> b </span> <input id="b-value"type="text" value="0"> </div>
+                            <div class="panel-rgb"><span> r </span> <input id="r-value" class="rgbinput" type="text" value="0"> </div>
+                            <div class="panel-rgb"><span> g </span> <input id="g-value" class="rgbinput"type="text" value="0"> </div>
+                            <div class="panel-rgb"><span> b </span> <input id="b-value"class="rgbinput" type="text" value="0"> </div>
                         </div>
                         <span id="input-warning">You can pick a color here!</span>  
                     </div>
-                        
+                </div>     
         </div>
+        <div class="toggle" id="blend-toggle">
+            <span >Blend effect</span>
+            <label class="switch">
+               <input id="blend-switch"type="checkbox">
+               <span class="slider round"></span>
+            </label>
+           </div>
+    </div>
         </div>
 
         <div id="grid"></div>

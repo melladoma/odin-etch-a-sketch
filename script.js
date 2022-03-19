@@ -44,6 +44,7 @@ let colorPickingActive = false;
 let blendEffectActive;
 
 
+
 //default mode
 let bBlue = 255;
 let rBlue = 0;
@@ -72,11 +73,12 @@ function addRandom(ev) {
 }
 
 //Picked color
-let allInput = document.querySelectorAll('input');
-let rInput
-let gInput
-let bInput
+let allInput = document.querySelectorAll('input.rgbinput');
+let rInputValue
+let gInputValue
+let bInputValue
 let inputWarning = document.getElementById('input-warning');
+
 
 for (let i = 0; i < 3; i++) {
     allInput[i].addEventListener('input', () => {
@@ -89,24 +91,24 @@ for (let i = 0; i < 3; i++) {
             inputWarning.textContent = "Please enter a number from 0 to 255";
         } else {
             inputWarning.textContent = "";
-            rInput = allInput[0].value;
-            gInput = allInput[1].value;
-            bInput = allInput[2].value;
-            inputWarning.textContent = `You picked color rgb(${rInput}, ${gInput}, ${bInput})`;
+            rInputValue = allInput[0].value;
+            gInputValue = allInput[1].value;
+            bInputValue = allInput[2].value;
+            inputWarning.textContent = `You picked color rgb(${rInputValue}, ${gInputValue}, ${bInputValue})`;
         }
     });
 }
 
 function addColorPicked(ev) {
     if (ev.fromElement.className.includes("cell")) {
-        rInput = allInput[0].value;
-        gInput = allInput[1].value;
-        bInput = allInput[2].value;
-        ev.fromElement.style.backgroundColor = `rgb(${rInput}, ${gInput}, ${bInput})`;
+        rInputValue = allInput[0].value;
+        gInputValue = allInput[1].value;
+        bInputValue = allInput[2].value;
+        ev.fromElement.style.backgroundColor = `rgb(${rInputValue}, ${gInputValue}, ${bInputValue})`;
         if (blendEffectActive) { addColorBlend(ev) };
     }
 }
-
+console.log(rInputValue)
 // ADDING TRAIL 
 function addColor() {
     colormodeActive = true;
@@ -136,17 +138,11 @@ function togglestate(ev) {
     (ev.fromElement.disabled) ? ev.fromElement.disabled = false : ev.fromElement.disabled = true
 }
 
-//RESETTING GRID
-function resetGrid() {
-    while (grid.firstChild) {
-        grid.removeChild(grid.firstChild);
-    }
-}
 
 //USER CUSTOMIZED GRID SIZE
 let userCellNum
 function getUserGrid() {
-    userCellNum = prompt('What type of grid do you want?')
+    userCellNum = prompt('How many squares-wide do you want your grid? \n\nNote: default is 16 squares wide.')
 
     if (userCellNum === null || userCellNum === NaN || userCellNum <= 0 || userCellNum > 100) {
         alert('please enter a number between 1 and 100')
@@ -156,15 +152,71 @@ function getUserGrid() {
     }
 };
 
-//FUNCTIONS BUTTONS + EVENTS
+//GRID MODE BUTTONS + EVENTS
 const buttonSize = document.getElementById('button-size');
 buttonSize.addEventListener('click', getUserGrid)
 
 const buttonReset = document.getElementById('button-reset')
 buttonReset.addEventListener('click', () => {
     resetGrid();
+    styleButton();
     createGrid(userCellNum);
+
 })
+
+//borderless grid mode
+const borderMode = document.getElementById('border-switch');
+let borderModeActive = false;
+borderMode.addEventListener('click', () => {
+    if (borderModeActive) {
+        borderModeActive = false;
+        for (let k = 0; k < cells.length; k++) {
+            cells[k].classList.remove("borderless")
+        }
+    } else {
+        borderModeActive = true;
+        for (let k = 0; k < cells.length; k++) {
+            cells[k].classList.add("borderless")
+        }
+    }
+})
+
+//bubble grid mode
+const cellMode = document.getElementById('bubble-switch');
+let cellModeActive = false;
+cellMode.addEventListener('click', () => {
+    if (cellModeActive) {
+        cellModeActive = false;
+        for (let k = 0; k < cells.length; k++) {
+            cells[k].classList.remove("bubble")
+        }
+
+    } else {
+        cellModeActive = true;
+        for (let k = 0; k < cells.length; k++) {
+            cells[k].classList.add("bubble")
+        }
+    }
+})
+
+//RESETTING GRID
+function resetGrid() {
+    cellModeActive = false;
+    borderModeActive = false;
+    while (grid.firstChild) {
+        grid.removeChild(grid.firstChild);
+    }
+}
+
+function check(inputId) {
+    document.getElementById(inputId).checked = true;
+}
+
+function uncheck(inputId) {
+    document.getElementById(inputId).checked = false;
+}
+
+//COLOR MODE BUTTONS + EVENTS
 
 const funkyMode = document.getElementById('button-funky');
 funkyMode.addEventListener('click', () => {
@@ -196,61 +248,21 @@ customMode.addEventListener('click', () => {
     styleButton();
 })
 
-const blendEffect = document.getElementById('button-blend');
+//Blend mode toggle
+const blendEffect = document.getElementById('blend-switch');
 blendEffect.addEventListener('click', () => {
-    const blendEffectValue = document.getElementById("blend-value")
     if (blendEffectActive) {
         blendEffectActive = false;
-        blendEffect.classList.remove("toggle");
     } else {
         blendEffectActive = true;
-        blendEffect.classList.add("toggle");
     }
 })
 
-//bubble grid mode
-const cellMode = document.getElementById('button-cell');
-let cellModeActive = false;
-cellMode.addEventListener('click', () => {
-    if (cellModeActive) {
-        cellModeActive = false;
-        cellMode.classList.remove("toggle");
-        for (let k = 0; k < cells.length; k++) {
-            cells[k].classList.remove("bubble")
-        }
-
-    } else {
-        cellModeActive = true;
-        cellMode.classList.add("toggle");
-        for (let k = 0; k < cells.length; k++) {
-            cells[k].classList.add("bubble")
-        }
-    }
-})
-
-
-//borderless grid mode
-const borderMode = document.getElementById('button-border');
-let borderModeActive = false;
-borderMode.addEventListener('click', () => {
-    if (borderModeActive) {
-        borderModeActive = false;
-        borderMode.classList.remove("toggle");
-        for (let k = 0; k < cells.length; k++) {
-            cells[k].classList.remove("borderless")
-        }
-
-    } else {
-        borderModeActive = true;
-        borderMode.classList.add("toggle");
-        for (let k = 0; k < cells.length; k++) {
-            cells[k].classList.add("borderless")
-        }
-    }
-})
-
+//RESETTING BUTTONS AND TOGGLES
+let rInput = allInput[0];
+let gInput = allInput[1];
+let bInput = allInput[2];
 function styleButton() {
-
     if (normalModeActive) {
         normalMode.classList.add("active")
     } else if (!normalModeActive) {
@@ -263,8 +275,24 @@ function styleButton() {
     }
     if (colorPickingActive) {
         customMode.classList.add("active")
+        rInput.classList.add("active");
+        gInput.classList.add("active");
+        bInput.classList.add("active");
     } else if (!colorPickingActive) {
         customMode.classList.remove("active")
+        rInput.classList.remove("active");
+        gInput.classList.remove("active");
+        bInput.classList.remove("active");
+    }
+    if (!cellModeActive) {
+        uncheck("bubble-switch");
+    } else if (cellModeActive) {
+        check("bubble-switch");
+    }
+    if (!borderModeActive) {
+        uncheck("border-switch");
+    } else if (borderModeActive) {
+        check("border-switch");
     }
 }
 
