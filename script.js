@@ -42,7 +42,8 @@ let normalModeActive = true;
 let funkyModeActive = false;
 let colorPickingActive = false;
 let blendEffectActive;
-
+let rgbColor;
+let colorGalleryModeActive = false;
 
 
 //default mode
@@ -53,6 +54,14 @@ function addBlue(ev) {
     normalModeActive = true;
     if (ev.fromElement.className.includes("cell")) {
         ev.fromElement.style.backgroundColor = `rgb(${rBlue}, ${gBlue}, ${bBlue})`;
+        if (blendEffectActive) { addColorBlend(ev) };
+    }
+}
+
+//color gallery mode
+function addColorGallery(ev) {
+    if (ev.fromElement.className.includes("cell")) {
+        ev.fromElement.style.backgroundColor = `${rgbColor}`;
         if (blendEffectActive) { addColorBlend(ev) };
     }
 }
@@ -78,6 +87,7 @@ let rInputValue
 let gInputValue
 let bInputValue
 let inputWarning = document.getElementById('input-warning');
+
 
 
 for (let i = 0; i < 3; i++) {
@@ -108,7 +118,9 @@ function addColorPicked(ev) {
         if (blendEffectActive) { addColorBlend(ev) };
     }
 }
-console.log(rInputValue)
+
+
+
 // ADDING TRAIL 
 function addColor() {
     colormodeActive = true;
@@ -118,6 +130,8 @@ function addColor() {
         return colormode = addRandom;
     } else if (normalModeActive) {
         return colormode = addBlue;
+    } else if (colorGalleryModeActive) {
+        return colormode = addColorGallery;
     }
 }
 
@@ -224,6 +238,7 @@ funkyMode.addEventListener('click', () => {
     funkyModeActive = true;
     normalModeActive = false;
     colorPickingActive = false;
+    colorGalleryModeActive = false;
     grid.addEventListener('mouseover', addColor());
     styleButton();
 })
@@ -234,6 +249,7 @@ normalMode.addEventListener('click', () => {
     normalModeActive = true;
     funkyModeActive = false;
     colorPickingActive = false;
+    colorGalleryModeActive = false;
     grid.addEventListener('mouseover', addColor());
     styleButton();
 })
@@ -244,9 +260,45 @@ customMode.addEventListener('click', () => {
     colorPickingActive = true;
     normalModeActive = false;
     funkyModeActive = false;
+    colorGalleryModeActive = false;
     grid.addEventListener('mouseover', addColor());
     styleButton();
 })
+
+//COLOR GALLERY
+let rgbChoices = {
+    yellow: "rgb(250,250,210)",//lightgoldenrodyellow
+    pink: "rgb(255,192,203)",
+    babyblue: "rgb(135,206,250)",
+    white: "rgb(255,255,255)",
+    grey: "rgb(100,100,100)",
+    black: "rgb(0,0,0)",
+    green: "rgb(147, 112, 207)",
+    blue: "rgb(95, 158, 160)",
+    peach: "rgb(85, 107, 45)",
+    orange: "rgb(244,164,96)",
+    red: "rgb(205,92,92)",
+    brown: "rgb(160,82,45)",
+
+};
+let colorGalleryDisplay = document.getElementById('color-gallery');
+
+for (const property in rgbChoices) {
+    let color = document.createElement('div');
+    color.classList.add("color-square");
+    color.style.backgroundColor = `${rgbChoices[property]}`;
+    colorGalleryDisplay.appendChild(color);
+    color.addEventListener('click', () => {
+        rgbColor = `${rgbChoices[property]}`
+        grid.removeEventListener('mouseover', addColor());
+        colorGalleryModeActive = true;
+        funkyModeActive = false;
+        normalModeActive = false;
+        colorPickingActive = false;
+        grid.addEventListener('mouseover', addColor());
+        styleButton();
+    })
+}
 
 //Blend mode toggle
 const blendEffect = document.getElementById('blend-switch');
@@ -296,9 +348,6 @@ function styleButton() {
     }
 }
 
-let rgbChoices = { red: "rgb(139, 0, 0)", green: "rgb(0, 128, 0)", blue: "rgb(0, 0, 255)", babyblue: "rgb(135,206,250)", yellow: "rgb(250,250,210)", orange: "rgb(255,165,0)", pink: "rgb(255,192,203)", violet: "rgb(139,0,139)", grey: "rgb(100,100,100)", black: "rgb(0,0,0)", white: "rgb(255,255,255" };
-
-
 
 //TOGGLE COLOR TRAIL WITH CLICK
 grid.addEventListener('click', () => {
@@ -311,3 +360,5 @@ function stopColor() {
 }
 styleButton();
 grid.addEventListener('mouseover', addColor());
+
+

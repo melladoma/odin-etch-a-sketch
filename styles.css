@@ -28,9 +28,9 @@ h1 {
   display: flex;
   gap: 5px;
 }
-.grid-panel button {
-  /* height: 50px; */
-}
+/* .grid-panel button {
+  height: 90px;
+} */
 
 .grid-panel-middle {
   display: flex;
@@ -189,4 +189,17 @@ input:checked + .slider:before {
   align-items: center;
   gap: 5px;
   justify-content: space-between;
+}
+
+#color-gallery {
+  display: flex;
+  height: 88px;
+  width: 66px;
+  flex-wrap: wrap;
+  border: 1px solid black;
+}
+.color-square {
+  height: 20px;
+  width: 20px;
+  border: 1px solid black;
 }
