@@ -94,10 +94,19 @@ button p {
 }
 #grid {
   display: flex;
-  padding: 10px;
+
   margin: 20px;
+  width: 550px;
+}
+main {
+  display: flex;
+  padding: 10px;
 }
 
+#info {
+  display: inline-block;
+  margin-top: 100px;
+}
 input {
   width: 40px;
 }
