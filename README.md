@@ -4,7 +4,7 @@ Etch-a-sketch game in Vanilla JS.
 
 Created as part of The Odin Project curriculum.
 
-[Live version](https://melladoma.github.io/js-retro-games/)
+[Live version](https://melladoma.github.io/odin-etch-a-sketch/)
 
 ## Functionalities
 
