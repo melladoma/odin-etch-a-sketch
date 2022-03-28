@@ -212,3 +212,13 @@ input:checked + .slider:before {
   width: 20px;
   border: 1px solid black;
 }
+
+#footer {
+  font-size: 15px;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
